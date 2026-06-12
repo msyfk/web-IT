@@ -1,0 +1,22 @@
+{
+  "name": "web-it",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Website resmi Program Studi Teknik Informatika",
+  "scripts": {
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "build:frontend": "npm --prefix frontend run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msyfk/web-IT.git"
+  },
+  "keywords": ["react", "express", "mysql", "informatics"],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/msyfk/web-IT/issues"
+  },
+  "homepage": "https://github.com/msyfk/web-IT#readme"
+}

@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  superadmin
+  staff
+}
+
+enum ArticleCategory {
+  berita
+  pengumuman
+}
+
+enum DocumentCategory {
+  akademik
+  skripsi
+  form
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  username  String    @unique @db.VarChar(50)
+  email     String    @unique @db.VarChar(100)
+  password  String    @db.VarChar(255)
+  role      Role      @default(staff)
+  articles  Article[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Lecturer {
+  id        Int      @id @default(autoincrement())
+  nidn      String   @unique @db.VarChar(20)
+  name      String   @db.VarChar(150)
+  title     String?  @db.VarChar(100)
+  expertise String?  @db.VarChar(255)
+  photoUrl  String?  @map("photo_url") @db.VarChar(255)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("lecturers")
+}
+
+model Article {
+  id        Int             @id @default(autoincrement())
+  title     String          @db.VarChar(255)
+  slug      String          @unique @db.VarChar(255)
+  content   String          @db.Text
+  category  ArticleCategory
+  imageUrl  String?         @map("image_url") @db.VarChar(255)
+  authorId  Int?            @map("author_id")
+  author    User?           @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt DateTime        @default(now()) @map("created_at")
+  updatedAt DateTime        @updatedAt @map("updated_at")
+
+  @@map("articles")
+}
+
+model Innovation {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  description String   @db.Text
+  developer   String   @db.VarChar(150)
+  githubUrl   String?  @map("github_url") @db.VarChar(255)
+  demoUrl     String?  @map("demo_url") @db.VarChar(255)
+  imageUrl    String?  @map("image_url") @db.VarChar(255)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("innovations")
+}
+
+model Document {
+  id        Int              @id @default(autoincrement())
+  title     String           @db.VarChar(255)
+  category  DocumentCategory
+  fileUrl   String           @map("file_url") @db.VarChar(255)
+  createdAt DateTime         @default(now()) @map("created_at")
+
+  @@map("documents")
+}
